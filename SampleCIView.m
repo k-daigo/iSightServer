@@ -157,7 +157,7 @@ static CGRect centerSizeWithinRect(CGSize size, CGRect rect);
      * buffered this should be replaced by [[self openGLContext]
      * flushBuffer]. */
     
-    glFlush ();
+    glFlush();
 }
 
 - (void)setCapture:(BOOL)aMode {

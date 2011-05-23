@@ -1,16 +1,7 @@
-//
-//  testAppDelegate.h
-//  test
-//
-//  Created by katu on 11/05/02.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
-//
-
 #import <Cocoa/Cocoa.h>
 #import <QTKit/QTKit.h>
 #import <QuartzCore/CoreImage.h>
 #import "SampleCIView.h"
-//#import "MainWindow.h"
 
 @interface CameraViewer : NSObject <NSWindowDelegate> {
     NSWindow *window;

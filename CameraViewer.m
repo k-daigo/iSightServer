@@ -55,7 +55,6 @@
     
     // QTCaptureVideoPreviewOutput could be if frame rate is not so important
     QTCaptureDecompressedVideoOutput *mCaptureDecompress = [[QTCaptureDecompressedVideoOutput alloc] init];
-    //QTCaptureVideoPreviewOutput *mCaptureDecompress = [[QTCaptureVideoPreviewOutput alloc] init];
     [mCaptureDecompress setDelegate:self];
     [mCaptureDecompress setPixelBufferAttributes:attributes];
     if ([mCaptureDecompress respondsToSelector:@selector(setAutomaticallyDropsLateVideoFrames:)]){
@@ -227,9 +226,10 @@
 	previewView = [[SampleCIView alloc] initWithFrame:windowRect];
 	[previewPanel setContentView:previewView];
 	[previewView release];
+    
 	[previewPanel setTitle:aTitle];
 	[previewPanel setDelegate:self];
-	[previewPanel makeKeyAndOrderFront:self];
+	[previewPanel orderFront:self];
 }
 
 - (void)setDelegate:(id)aDelegate {
@@ -242,17 +242,15 @@
                 withSampleBuffer:(QTSampleBuffer *)sampleBuffer
                 fromConnection:(QTCaptureConnection *)connection
 {
-
-	// Drop frames if they fall behind due to increased processing time on slower computers
-	// MacBookPro .02 and .03 delay on coming in is normal
-	uint64_t ht = CVGetCurrentHostTime(), iht = [[sampleBuffer attributeForKey:QTSampleBufferHostTimeAttribute] unsignedLongLongValue];
-	double hts = ht/clockFrequency, ihts = iht/clockFrequency;
+	uint64_t ht = CVGetCurrentHostTime();
+    uint64_t iht = [[sampleBuffer attributeForKey:QTSampleBufferHostTimeAttribute] unsignedLongLongValue];
+	double hts = ht / clockFrequency;
+    double ihts = iht / clockFrequency;
 	
 	if(hts > ihts + 0.1) { // 1/10 of a second
 		return;
 	}
 	
-	// Changes here don't reflect captures with the old iSight need to update displayData:trackingFlags:displayTime:displayDuration:validTimeFlags:	
 	if (previewPanel != nil)
     {
 		CIImage * ciImage = [CIImage imageWithCVImageBuffer:videoFrame];
