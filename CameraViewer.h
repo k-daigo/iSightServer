@@ -13,12 +13,10 @@
 	SampleCIView *previewView;
 	NSPanel *previewPanel;
 	BOOL  mirrored;
-
 }
 
 @property (assign) IBOutlet NSWindow *window;
 
-- (void)exec;
 - (void)startPreview;
 - (Boolean)checkQTVersion;
 - (BOOL)closeiSight;

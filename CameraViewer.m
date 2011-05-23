@@ -7,11 +7,8 @@
 
 @synthesize window;
 
+// 開始
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	[self exec];
-}
-
-- (void)exec {
 	[self startPreview];
 }
 
@@ -28,16 +25,10 @@
 	// デバイスを取得
 	QTCaptureDevice *videoDevice = [CameraViewer selectAndOpenVideoDevice:@"iSight ID"];
 
-	NSString *cameraDescription = [videoDevice modelUniqueID];
-	NSString *cameraName = [videoDevice localizedDisplayName];
-	NSLog(@"cameraDescription = %@", cameraDescription);
-	NSLog(@"cameraName = %@", cameraName);
-    
-    NSError *error = nil;
-
-    mCaptureSession = [[QTCaptureSession alloc] init];
-
     QTCaptureDeviceInput *mCaptureVideoDeviceInput = [[QTCaptureDeviceInput alloc] initWithDevice:videoDevice];
+
+    NSError *error = nil;
+    mCaptureSession = [[QTCaptureSession alloc] init];
     BOOL success = [mCaptureSession addInput:mCaptureVideoDeviceInput error:&error];
     [mCaptureVideoDeviceInput release];
     if (!success) {
@@ -69,7 +60,6 @@
         return;
     }
     
-    // Associate the capture view in the UI with the session
     [self setupPreviewWindowWithTitle:@"iSightServer Preview" crop:cropArea];
     
     [mCaptureSession startRunning];
